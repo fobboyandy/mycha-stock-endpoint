@@ -3,9 +3,8 @@ const app = express();
 const morgan = require("morgan");
 const parser = require("body-parser");
 const path = require("path");
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 4001;
 const { createServer } = require("vite");
-const { spawn } = require("child_process");
 
 app.use(morgan("dev"));
 app.use(parser.json());
