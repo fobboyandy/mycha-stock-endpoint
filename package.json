@@ -19,12 +19,6 @@
     "preview": "vite preview",
     "dev2": "concurrently \"vite build --watch\" \"nodemon server/server.js\""
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -36,9 +30,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "sass": "^1.55.0",
-    "sass-loader": "^13.1.0"
   }
 }

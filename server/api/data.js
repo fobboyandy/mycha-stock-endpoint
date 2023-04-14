@@ -45,10 +45,7 @@ router.all("/fetchlocations", (req, res) => {
   res.header("Access-Control-Allow-Headers", "X-Requested-With");
   let result = "";
   // spawn new child process to call the python script
-  const python = spawn("python3", [
-    "server/api/get_list_of_locations.py",
-    JSON.stringify(req.params.location),
-  ]);
+  const python = spawn("python3", ["server/api/get_list_of_locations.py"]);
 
   // collect data from script
   python.stdout.on("data", function (data) {
