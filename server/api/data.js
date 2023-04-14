@@ -3,7 +3,9 @@ const { spawn } = require("child_process");
 
 module.exports = router;
 
-router.post("/", (req, res) => {
+router.all("/", (req, res) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
   const data = req.body.data;
   const location = req.body.location;
 
@@ -38,7 +40,9 @@ router.post("/", (req, res) => {
   });
 });
 
-router.get("/fetchlocations", (req, res) => {
+router.all("/fetchlocations", (req, res) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
   let result = "";
   // spawn new child process to call the python script
   const python = spawn("python3", [
@@ -63,7 +67,9 @@ router.get("/fetchlocations", (req, res) => {
   });
 });
 
-router.get("/fetchstock/:location", (req, res) => {
+router.all("/fetchstock/:location", (req, res) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
   let largeDataSet = [];
   let result = "";
   // spawn new child process to call the python script
