@@ -26,7 +26,7 @@ location_name = json.loads(sys.argv[2])
 
 
 upload_file(location_name+"_stock-data", location_stock)
-print("success")
+print(json.dumps("success"))
 
 
 

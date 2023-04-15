@@ -1,1 +1,1 @@
-python backend for https://github.com/yuiyuuuu/mycha
+python endpoint for https://github.com/yuiyuuuu/mycha
