@@ -2,6 +2,8 @@ import json
 import sys
 import boto3
 import pickle
+import pytz
+import datetime
 
 from dotenv import load_dotenv
 from os.path import join, dirname
@@ -20,8 +22,11 @@ def upload_file(filename, data):
     
     pickle.dump( data, open( filename, "wb" ) )
     s3.upload_file(filename, 'mycha-inventory', filename)
+
+timezone = pytz.timezone('US/Eastern')
+submission_time = datetime.now(timezone)
     
-location_stock = json.loads(sys.argv[1])
+location_stock = json.loads({"stock": sys.argv[1], "time": submission_time})
 location_name = json.loads(sys.argv[2])
 
 
