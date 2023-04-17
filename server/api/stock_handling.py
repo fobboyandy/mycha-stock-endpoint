@@ -26,7 +26,7 @@ def upload_file(filename, data):
 timezone = pytz.timezone('US/Eastern')
 submission_time = datetime.now(timezone)
     
-location_stock = json.loads({"stock": sys.argv[1], "time": submission_time})
+location_stock = {"stock": json.loads(sys.argv[1]), "time": submission_time}
 location_name = json.loads(sys.argv[2])
 
 
