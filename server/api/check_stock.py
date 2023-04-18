@@ -7,6 +7,8 @@ from dotenv import load_dotenv
 from os.path import join, dirname
 import os
 
+from datetime import datetime, time
+
 dotenv_path = ".env"
 values = load_dotenv(dotenv_path)
 
@@ -23,11 +25,12 @@ def download_file(filename):
         data = pickle.load( open(filename, "rb" ) )
         return data 
     except:
-        return [[0 for i in range(7)] for i in range(6)]
+        return 'not found'
         
         
 location_name = json.loads(sys.argv[1])
         
 data = download_file(location_name+'_stock-data')
 
-print(json.dumps(data["stock"], indent=2))
+
+print(json.dumps({"stock":data["stock"], "time":str(datetime.timestamp(data["time"]))}, indent=2))

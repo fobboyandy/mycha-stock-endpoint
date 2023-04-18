@@ -34,7 +34,8 @@ location_name = json.loads(sys.argv[2])
 
 
 upload_file(location_name+"_stock-data", location_stock)
-print(json.dumps("success"))
+# print(json.dumps(submission_time))
+print(json.dumps({"status": str('success'), "time": str(datetime.timestamp(submission_time))}))
 
 
 
