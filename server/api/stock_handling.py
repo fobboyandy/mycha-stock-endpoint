@@ -3,7 +3,7 @@ import sys
 import boto3
 import pickle
 import pytz
-import datetime
+from datetime import datetime
 
 from dotenv import load_dotenv
 from os.path import join, dirname
@@ -25,8 +25,11 @@ def upload_file(filename, data):
 
 timezone = pytz.timezone('US/Eastern')
 submission_time = datetime.now(timezone)
+
+stock = json.loads(sys.argv[1])
     
-location_stock = {"stock": json.loads(sys.argv[1]), "time": submission_time}
+location_stock = {"stock": stock, "time": submission_time}
+
 location_name = json.loads(sys.argv[2])
 
 
