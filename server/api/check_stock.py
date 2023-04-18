@@ -30,4 +30,4 @@ location_name = json.loads(sys.argv[1])
         
 data = download_file(location_name+'_stock-data')
 
-print(json.dumps(data, indent=2))
+print(json.dumps(data["stock"], indent=2))
