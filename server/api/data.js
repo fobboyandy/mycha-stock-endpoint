@@ -86,7 +86,6 @@ router.all("/fetchstock/:location/:secretkey", (req, res) => {
     return;
   }
 
-  let largeDataSet = [];
   let result = "";
   // spawn new child process to call the python script
   const python = spawn("python3", [

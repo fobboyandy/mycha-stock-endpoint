@@ -23,7 +23,7 @@ def upload_file(filename, data):
     pickle.dump( data, open( filename, "wb" ) )
     s3.upload_file(filename, 'mycha-inventory', filename)
 
-timezone = pytz.timezone('US/Eastern')
+timezone = pytz.timezone('US/Central')
 submission_time = datetime.now(timezone)
 
 stock = json.loads(sys.argv[1])
