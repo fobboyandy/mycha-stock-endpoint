@@ -24,7 +24,7 @@ def upload_file(filename, data):
     s3.upload_file(filename, 'mycha-inventory', filename)
 
 timezone = pytz.timezone('US/Central')
-submission_time = datetime.now(timezone)
+submission_time = datetime.now(timezone).timestamp()
 
 stock = json.loads(sys.argv[1])
     
@@ -35,7 +35,7 @@ location_name = json.loads(sys.argv[2])
 
 upload_file(location_name+"_stock-data", location_stock)
 # print(json.dumps(submission_time))
-print(json.dumps({"status": str('success'), "time": str(datetime.timestamp(submission_time))}))
+print(json.dumps({"status": str('success'), "time": str(submission_time)}))
 
 
 
