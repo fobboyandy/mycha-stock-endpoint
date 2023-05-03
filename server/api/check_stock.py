@@ -33,4 +33,4 @@ location_name = json.loads(sys.argv[1])
 data = download_file(location_name+'_stock-data')
 
 
-print(json.dumps({"stock":data["stock"], "time":str(datetime.timestamp(data["time"]))}, indent=2))
+print(json.dumps({"stock":data["stock"], "time":str(data["time"])}, indent=2))
