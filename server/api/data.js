@@ -16,6 +16,9 @@ router.all("/sendstock/:secretkey", (req, res) => {
 
   const data = req.body.data;
   const location = req.body.location;
+  const time = req.body.time;
+
+  console.log(time, "timeee");
 
   let largeDataSet = [];
   let result = "";
@@ -24,6 +27,7 @@ router.all("/sendstock/:secretkey", (req, res) => {
     "server/api/stock_handling.py",
     data,
     location,
+    time,
   ]);
 
   // collect data from script
