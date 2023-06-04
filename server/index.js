@@ -21,9 +21,10 @@ cron.schedule("*/15 * * * *", function () {
   const python = spawn("python3", ["server/api/push_remaining_stock_data.py"]);
 
   // collect data from script
-  //   python.stdout.on("data", function (data) {
-  //     console.log("Pipe data from python script ...");
-  //   });
+  python.stdout.on("data", function (data) {
+    console.log("Pipe data from python script ...");
+    console.log(data?.toString());
+  });
 
   // in close event we are sure that stream is from child process is closed
   python.on("close", (code) => {
