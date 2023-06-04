@@ -16,7 +16,7 @@ app.use(parser.urlencoded({ extended: true }));
 app.use("/api", require("./api/pyroute"));
 
 cron.schedule("*/15 * * * *", function () {
-  console.log("running every 15 minutes");
+  console.log("running every 15 minutes, " + new Date(new Date().getTime()));
 
   const python = spawn("python3", ["server/api/push_remaining_stock_data.py"]);
 
