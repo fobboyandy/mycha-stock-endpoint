@@ -12,6 +12,7 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "morgan": "^1.10.0",
+    "node-cron": "^3.0.2",
     "nodemon": "^2.0.22",
     "web-vitals": "^2.1.4"
   },
