@@ -31,6 +31,12 @@ def download_file(filename):
 location_name = json.loads(sys.argv[1])
         
 data = download_file(location_name+'_stock-second')
+memo = ''
+
+try:
+    memo = data["memo"]
+except: 
+    memo = ''
 
 
-print(json.dumps({"stock":data["stock"], "time":str(data["time"])}, indent=2))
+print(json.dumps({"stock":data["stock"], "memo":memo}, indent=2))
