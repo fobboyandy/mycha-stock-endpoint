@@ -327,7 +327,7 @@ def calculate_inventory_remaining(locations, REPORT_DAYS_LIMIT = 3):
 groups = download_file("groups")
 layout = download_file("layout")
 
-remaining_inventory_by_location = calculate_inventory_remaining(layout.keys())
+remaining_inventory_by_location = calculate_inventory_remaining(layout.keys(), 7)
 
 #organized as group:location:item name, count
 for location,inventory in remaining_inventory_by_location.items():
