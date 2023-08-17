@@ -225,6 +225,8 @@ router.all("/getstockforalocation/:location/:secretkey", (req, res) => {
     return;
   }
 
+  console.log(req.params.location, "locationnnnnn nameeee");
+
   const locationName = req.params.location;
 
   let largeDataSet = [];

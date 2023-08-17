@@ -76,7 +76,7 @@ def normalizeLocationName(location_name):
     normal_location_name = ""
     
     for c in location_name:
-        if (ord(c) >= ord('a') and ord(c) <= ord('z')) or (ord(c) >= ord('A') and ord(c) <= ord('Z')) or (ord(c) >= ord('0') and ord(c) <= ord('9')):
+        if (ord(c) >= ord('a') and ord(c) <= ord('z')) or (ord(c) >= ord('A') and ord(c) <= ord('Z')) or (ord(c) >= ord('0') and ord(c) <= ord('9')) or (ord(c) == ord('-')):
             normal_location_name += c
         
     return normal_location_name
