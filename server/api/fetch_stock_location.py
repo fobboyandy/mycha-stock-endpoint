@@ -33,7 +33,7 @@ def download_file(filename):
         
 location_name = json.loads(sys.argv[1])
         
-data = download_file(location_name+'_current_inventory')
+data = download_file(location_name+'_current_inventory_fobboyandy')
 
 
 print(json.dumps(data, indent=2))
