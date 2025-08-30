@@ -84,8 +84,15 @@ def normalizeLocationName(location_name):
 def tcnIndexToRowCol(index):
     return ((index - 1)//10, (index - 1) % 10)
     
+    
+
 def getOtherSalesPagesUrls(content):
+
+
+
+    # print("content", content)
     search_string = b"&nbsp;of&nbsp;"
+    
     
     pages = 1
     #get pages
@@ -93,25 +100,50 @@ def getOtherSalesPagesUrls(content):
     if(find_idx != -1 ):
         end_idx =  content.find(b"</td>", find_idx)
         pages = int(content[find_idx + len(search_string) : end_idx - 1])
+        print("pages", pages)
         
+    urls = []
+    
     if(pages < 2):
+        print("no other pages found")
         return []
     else:
-        locationhref = b"location.href="
-        command_idx = content.find(locationhref)
-        
-        if(command_idx != -1):
-            end_command_idx = content.find(b"pageId", command_idx + len(locationhref))
-            page_command = content[command_idx + len(locationhref) + 1: end_command_idx] + b"pageId="
+
+        # print("content", content)
+        request_id_search_string = b"<input type=\"hidden\" name=\"requestId\" value="
+        profile_id_search_string = b"<input type=\"hidden\" name=\"profileId\" value="
+
+        #find profile and request id and generate the rest of the urls
+        url_prefix = "https://seedlive.com/retrieve_report_page_by_user.i?pollInterval=1000&pollIntervalIndex=1"
+
+        print("multiple pages? command_idx", find_idx)
+
+        if(find_idx != -1):
+                
+            value_search_start_idx = content.find(request_id_search_string)
+            value_search_end_idx = content.find(b"\" />", value_search_start_idx + len(request_id_search_string))
+            request_id = content[value_search_start_idx + len(request_id_search_string) + 1: value_search_end_idx].decode()
+
+
+            value_search_start_idx = content.find(profile_id_search_string)
+            value_search_end_idx = content.find(b"\" />", value_search_start_idx + len(profile_id_search_string))
+            profile_id = content[value_search_start_idx + len(profile_id_search_string) + 1: value_search_end_idx].decode()
+
+            print("request_id", request_id)
+            print("profile_id", profile_id)
+            # page_command = str(page_command, 'utf-8')
             
-            page_command = str(page_command, 'utf-8')
-            
-            urls = []
             for page_num in range(pages - 1):
-                page_url = "https://seedlive.com/" + page_command + str(page_num + 1)
+                page_url = url_prefix + "&profileId="+profile_id+"&requestId="+request_id+"&pageId="+str(page_num+1)
                 urls.append(page_url)
                 
+            print(urls)
+        
+                
     return urls
+    
+
+
     
 def generateSalesByLocation(url):    
     current_report_location = ""
