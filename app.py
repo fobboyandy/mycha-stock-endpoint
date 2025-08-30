@@ -34,7 +34,7 @@ def download_file(filename):
         data = pickle.load( open(filename, "rb" ) )
         return data 
     except:
-        return 'not found'
+        return None
 
 
 
@@ -53,10 +53,12 @@ def home():
 @app.route('/fetch_stock_location/<location>') 
 def fetch_stock_location(location): 
             
-    data = download_file(location+'_current_inventory_fobboyandy')
+    filename = location+'_current_inventory_fobboyandy'
+    print(filename)
+    data = download_file(filename)
 
 
-    print(json.dumps(data, indent=2))
+    return(json.dumps(data, indent=2))
 
 
 
