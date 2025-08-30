@@ -373,4 +373,4 @@ for location,inventory in remaining_inventory_by_location.items():
                 
         inventory_with_name.append(row_items)
         
-    upload_file(location+"_current_inventory", inventory_with_name)
+    upload_file(location+"_current_inventory_fobboyandy", inventory_with_name)
