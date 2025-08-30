@@ -59,8 +59,7 @@ def fetch_stock_location(location):
     print(filename)
     data = download_file(filename)
 
-
-    return(json.dumps(data, indent=2))
+    return(data)
 
 
 
