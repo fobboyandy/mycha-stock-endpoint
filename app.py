@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 from os.path import join, dirname
 import os
 
+from flask_cors import CORS
 
 
 aws_access_key_id = os.environ.get("ACCESS_KEY")
@@ -42,6 +43,7 @@ def download_file(filename):
 
 
 app = Flask(__name__); 
+CORS(app) # This enables CORS for all routes and origins
 
 @app.route('/') 
 def home(): 
