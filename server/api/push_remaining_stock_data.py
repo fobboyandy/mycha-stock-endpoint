@@ -21,9 +21,15 @@ aws_secret_access_key = os.environ.get("SECRET_KEY")
 
 loginUrl = 'https://seedlive.com/login.i'
 
-payload = {
-    'username' : os.environ.get("USERNAME"),
-    'password' : os.environ.get("PASSWORD")
+chicago_payload = {
+    'username' : os.environ.get("seedlive_chi_user"),
+    'password' : os.environ.get("seedlive_chi_pw")
+}
+
+
+la_payload = {
+    'username' : os.environ.get("seedlive_la_user"),
+    'password' : os.environ.get("seedlive_la_pw")
 }
 
 TIME_COL = 6
@@ -145,14 +151,14 @@ def getOtherSalesPagesUrls(content):
 
 
     
-def generateSalesByLocation(url):    
+def generateSalesByLocation(login_data, url):    
     current_report_location = ""
 
     if "seedlive.com" not in url:
         return {}
     
     with requests.session() as s:
-        s.post(loginUrl, data = payload)
+        s.post(loginUrl, data = login_data)
     
     def getContentFromUrl(urlIn):
         r = s.get(urlIn)
@@ -252,7 +258,6 @@ def upload_file(filename, data):
 def download_file(filename):
 
     #open up access to s3
-    print("aws_access_key_id", aws_access_key_id, "aws_secret_access_key", aws_secret_access_key)
     s3 = boto3.client('s3',  region_name='us-east-2', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
     try:
         s3.download_file('mycha-inventory', filename, filename, Config=boto3.s3.transfer.TransferConfig(use_threads=False))
@@ -267,7 +272,7 @@ def download_file(filename):
 
 # creates a report, looks at the stocking information and then looks at layout
 # to generate the exact state of the machine at this time
-def calculate_inventory_remaining(locations, REPORT_DAYS_LIMIT = 3):
+def calculate_inventory_remaining(locations, login_data, REPORT_DAYS_LIMIT = 3):
     
     terminal_ids = download_file("terminal_ids")
     
@@ -337,7 +342,7 @@ def calculate_inventory_remaining(locations, REPORT_DAYS_LIMIT = 3):
     if len(valid_terminal_ids_for_report):
         salesReportUrl = generateSalesUrl(int(maxdeltadays), valid_terminal_ids_for_report)
     
-        salesByLocation = generateSalesByLocation(salesReportUrl)
+        salesByLocation = generateSalesByLocation(login_data, salesReportUrl)
 
     # subtract every sale past the restocking timestamp
     for loc, sales in salesByLocation.items():
@@ -354,13 +359,30 @@ def calculate_inventory_remaining(locations, REPORT_DAYS_LIMIT = 3):
                 if(remaining_inventory_by_location[loc][row][col] < 0):
                     remaining_inventory_by_location[loc][row][col] = 0
                 
+    print("remaining_inventory_by_location", remaining_inventory_by_location)
+            
     return remaining_inventory_by_location
     
     
 groups = download_file("groups")
 layout = download_file("layout")
 
-remaining_inventory_by_location = calculate_inventory_remaining(layout.keys(), 7)
+chicago_locations = []
+la_locations = []
+
+for location, group in groups.items():
+    if(group.lower() == "chicago"):
+        chicago_locations.append(location)
+    elif(group.lower() == "la"):
+        la_locations.append(location)
+
+
+# print("chicago_locations", chicago_locations, "la_locations", la_locations)
+
+chi_remaining_inventory_by_location = calculate_inventory_remaining(chicago_locations, chicago_payload, 7)
+la_rem_inventory_by_location = calculate_inventory_remaining(la_locations, la_payload, 7)
+
+remaining_inventory_by_location = chi_remaining_inventory_by_location | la_rem_inventory_by_location
 
 #organized as group:location:item name, count
 for location,inventory in remaining_inventory_by_location.items():
@@ -375,3 +397,4 @@ for location,inventory in remaining_inventory_by_location.items():
         inventory_with_name.append(row_items)
         
     upload_file(location+"_current_inventory_fobboyandy", inventory_with_name)
+
