@@ -346,6 +346,9 @@ def calculate_inventory_remaining(locations, login_data, REPORT_DAYS_LIMIT = 3):
         print("salesReportUrl", salesReportUrl)
         salesByLocation = generateSalesByLocation(login_data, salesReportUrl)
 
+        print("salesByLocation", salesByLocation)
+
+
     # subtract every sale past the restocking timestamp
     for loc, sales in salesByLocation.items():
 
