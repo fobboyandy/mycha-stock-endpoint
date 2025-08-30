@@ -91,7 +91,6 @@ def tcnIndexToRowCol(index):
     return ((index - 1)//10, (index - 1) % 10)
     
     
-
 def getOtherSalesPagesUrls(content):
 
 
@@ -148,7 +147,6 @@ def getOtherSalesPagesUrls(content):
                 
     return urls
     
-
 
     
 def generateSalesByLocation(login_data, url):    
@@ -345,7 +343,7 @@ def calculate_inventory_remaining(locations, login_data, REPORT_DAYS_LIMIT = 3):
     
     if len(valid_terminal_ids_for_report):
         salesReportUrl = generateSalesUrl(int(maxdeltadays), valid_terminal_ids_for_report)
-    
+        print("salesReportUrl", salesReportUrl)
         salesByLocation = generateSalesByLocation(login_data, salesReportUrl)
 
     # subtract every sale past the restocking timestamp
