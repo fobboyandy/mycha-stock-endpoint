@@ -252,6 +252,7 @@ def upload_file(filename, data):
 def download_file(filename):
 
     #open up access to s3
+    print("aws_access_key_id", aws_access_key_id, "aws_secret_access_key", aws_secret_access_key)
     s3 = boto3.client('s3',  region_name='us-east-2', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
     try:
         s3.download_file('mycha-inventory', filename, filename, Config=boto3.s3.transfer.TransferConfig(use_threads=False))
