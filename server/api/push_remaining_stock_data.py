@@ -92,9 +92,6 @@ def tcnIndexToRowCol(index):
     
     
 def getOtherSalesPagesUrls(content):
-
-
-
     # print("content", content)
     search_string = b"&nbsp;of&nbsp;"
     
@@ -301,8 +298,6 @@ def calculate_inventory_remaining(locations, login_data, REPORT_DAYS_LIMIT = 3):
     for location in locations:
         inventory_stock_data = download_file(normalizeLocationName(location)+"_stock-data")
 
-
-        
         # if the data exists but the stocking time is beyond an upper limit, eg. the machine was 
         # last stocked before the beginning of a long holiday break, just treat the machine as empty
         # we need to do this in order to have an upper bound on the how far we should go back in the 
@@ -343,45 +338,22 @@ def calculate_inventory_remaining(locations, login_data, REPORT_DAYS_LIMIT = 3):
     
     if len(valid_terminal_ids_for_report):
         salesReportUrl = generateSalesUrl(int(maxdeltadays), valid_terminal_ids_for_report)
-        print("salesReportUrl", salesReportUrl)
         salesByLocation = generateSalesByLocation(login_data, salesReportUrl)
-
-        print("salesByLocation", salesByLocation)
 
 
     # subtract every sale past the restocking timestamp
     for loc, sales in salesByLocation.items():
-
         timestamp_since_restock = int(inventory_stock_data_by_location[loc]["time"])
-
-        if(loc == "CSUDH"):
-            print("timestamp_since_restock", timestamp_since_restock, "sales", sales)
-
 
         for sale in sales:
 
             # for each sale, if the timestamp is after restock, then subtract from
             # the inventory stock data
             if sale["Timestamp"] >= timestamp_since_restock:
-
-
                 row,col = tcnIndexToRowCol(sale["ID"])
-                
-
-
-                if(loc == "CSUDH"):
-                    print("sale after timestamp", sale)
-                    print("remaining_inventory_by_location[csudh]", remaining_inventory_by_location[loc])
-
-
                 remaining_inventory_by_location[loc][row][col] -= 1
                 if(remaining_inventory_by_location[loc][row][col] < 0):
                     remaining_inventory_by_location[loc][row][col] = 0
-                    
-                if(loc == "CSUDH"):
-                    print("remaining_inventory_by_location[csudh] subtracted ", remaining_inventory_by_location[loc])
-
-
             
     return remaining_inventory_by_location
     
@@ -401,7 +373,7 @@ for location, group in groups.items():
 
 # print("chicago_locations", chicago_locations, "la_locations", la_locations)
 
-chi_remaining_inventory_by_location = {} # calculate_inventory_remaining(chicago_locations, chicago_payload, 7)
+chi_remaining_inventory_by_location = calculate_inventory_remaining(chicago_locations, chicago_payload, 7)
 la_rem_inventory_by_location = calculate_inventory_remaining(la_locations, la_payload, 7)
 
 remaining_inventory_by_location = chi_remaining_inventory_by_location | la_rem_inventory_by_location
